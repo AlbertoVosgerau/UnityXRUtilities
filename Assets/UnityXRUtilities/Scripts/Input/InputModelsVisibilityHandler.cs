@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class InputModelsVisibilityHandler : MonoBehaviour
@@ -62,6 +63,31 @@ public class InputModelsVisibilityHandler : MonoBehaviour
         foreach (var hand in hands)
         {
             hand.SetActive(true);
+        }
+    }
+}
+
+[CustomEditor(typeof(InputModelsVisibilityHandler))]
+public class InputModelsVisibilityHandlerEditor : Editor
+{
+    InputModelsVisibilityHandler visibilityHandler;
+    private void OnEnable()
+    {
+        visibilityHandler = target as InputModelsVisibilityHandler;
+    }
+
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+        if(GUILayout.Button("Show Controllers"))
+        {
+            if(Application.isPlaying)
+                visibilityHandler.ShowControllers();
+        }
+        if (GUILayout.Button("Show Hands"))
+        {
+            if (Application.isPlaying)
+                visibilityHandler.ShowHands();
         }
     }
 }
