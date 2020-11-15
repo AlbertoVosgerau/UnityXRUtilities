@@ -2,25 +2,27 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class DeviceControllerModelSolver : MonoBehaviour
+public class DeviceControllerModelCreator : MonoBehaviour
 {
-    [SerializeField] private bool showControllersOnCreation = true;
+    public bool showControllersOnCreation = true;
     [SerializeField] private VRControllers controllers;
     [SerializeField] private XRController leftController;
     [SerializeField] private XRController rightController;
+
+    public UnityEvent<GameObject> onControllerCreated;
+
     private void OnEnable()
     {
         XRInputDevices.onControllerConnected += OnControllerConnected;
     }
-
     private void OnDisable()
     {
         XRInputDevices.onControllerConnected -= OnControllerConnected;
     }
-
     private void OnControllerConnected(InputDevice inputDevice)
     {
         if(inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Right))
@@ -32,7 +34,6 @@ public class DeviceControllerModelSolver : MonoBehaviour
             SolveControllerModel(inputDevice, leftController);
         }
     }
-
     private void SolveControllerModel(InputDevice inputDevice, XRController target)
     {
         if (!inputDevice.isValid)
@@ -42,7 +43,7 @@ public class DeviceControllerModelSolver : MonoBehaviour
 
         for (int i = 0; i < targetChildren.Length; i++)
         {
-            if(targetChildren[i].name == inputDevice.name)
+            if(targetChildren[i].name == "controller")
             {
                 return;
             }
@@ -73,6 +74,7 @@ public class DeviceControllerModelSolver : MonoBehaviour
         }
 
         target.modelPrefab = newController.transform;
+        onControllerCreated.Invoke(newController);
 
         if(!showControllersOnCreation)
         {
