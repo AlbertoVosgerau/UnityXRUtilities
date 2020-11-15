@@ -33,13 +33,13 @@ public class RegisterInputDevices : MonoBehaviour
             Debug.Log(device.characteristics);
             if (device.characteristics.HasFlag(InputDeviceCharacteristics.Right) && !XRInputDevices.RightController.isValid)
             {
-                Debug.Log("Right controller connected!");
+                Debug.Log($"{device.name} connected!");
                 XRInputDevices.RightController = device;
             }
 
             if (device.characteristics.HasFlag(InputDeviceCharacteristics.Left) && !XRInputDevices.LeftController.isValid)
             {
-                Debug.Log("Left controller connected!");
+                Debug.Log($"{device.name} connected!");
                 XRInputDevices.LeftController = device;
             }
         }
