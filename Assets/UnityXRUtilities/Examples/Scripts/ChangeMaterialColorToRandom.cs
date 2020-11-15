@@ -15,8 +15,6 @@ public class ChangeMaterialColorToRandom : MonoBehaviour
         if (mat == null)
             return;
 
-        Debug.Log($"{XRInputDevices.RightController.characteristics}\n{XRInputDevices.LeftController.characteristics}");
-
         XRInputDevices.RightController.TryGetFeatureValue(CommonUsages.primaryButton, out bool primaryButtonValue);
         if (primaryButtonValue)
             mat.color = Random.ColorHSV();

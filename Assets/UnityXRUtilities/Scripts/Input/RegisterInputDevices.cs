@@ -18,36 +18,29 @@ public class RegisterInputDevices : MonoBehaviour
     }
     public static void RegisterDevices()
     {
-        Debug.Log("Search for devices");    
+        if (XRInputDevices.RightController.isValid && XRInputDevices.LeftController.isValid)
+        {
+            return;
+        }
+
         List<InputDevice> validDevices = new List<InputDevice>();
         InputDeviceCharacteristics validDeviceModel = InputDeviceCharacteristics.Controller;
         InputDevices.GetDevicesWithCharacteristics(validDeviceModel, validDevices);
-
-        Debug.Log($"Valid devices count:{validDevices.Count}");
-        foreach (var item in validDevices)
-        {
-            Debug.Log($"Device: {item.characteristics}");
-        }
 
         for (int i = 0; i < validDevices.Count; i++)
         {
             InputDevice device = validDevices[i];
             Debug.Log(device.characteristics);
-            if (device.characteristics.HasFlag(InputDeviceCharacteristics.Right) && XRInputDevices.RightController != null)
+            if (device.characteristics.HasFlag(InputDeviceCharacteristics.Right) && !XRInputDevices.RightController.isValid)
             {
-                Debug.Log("Right device");
+                Debug.Log("Right controller connected!");
                 XRInputDevices.RightController = device;
             }
 
-            if (device.characteristics.HasFlag(InputDeviceCharacteristics.Left) && XRInputDevices.LeftController != null)
+            if (device.characteristics.HasFlag(InputDeviceCharacteristics.Left) && !XRInputDevices.LeftController.isValid)
             {
-                Debug.Log("Left device");
+                Debug.Log("Left controller connected!");
                 XRInputDevices.LeftController = device;
-            }
-
-            if (XRInputDevices.RightController != null && XRInputDevices.LeftController != null)
-            {
-                break;
             }
         }
     }
