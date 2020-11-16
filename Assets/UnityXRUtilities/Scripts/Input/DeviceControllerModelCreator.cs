@@ -73,7 +73,6 @@ public class DeviceControllerModelCreator : MonoBehaviour
 
         }
 
-        target.modelPrefab = newController.transform;
         onControllerCreated.Invoke(newController);
 
         if(!showControllersOnCreation)
