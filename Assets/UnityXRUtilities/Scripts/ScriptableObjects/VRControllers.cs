@@ -25,7 +25,7 @@ public class VRControllersEditor : Editor
     {
         GUILayout.Label("Default Controller");
         vrControllers.defaultController = EditorGUILayout.ObjectField(vrControllers.defaultController, typeof(GameObject), true) as GameObject;
-        if (vrControllers.controllerNames.Count == 0)
+        if (vrControllers.controllerNames.Count < 1)
         {
             if (GUILayout.Button("Add controller"))
             {

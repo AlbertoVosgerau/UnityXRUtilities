@@ -5,6 +5,7 @@ using UnityEngine.XR;
 
 public class ChangeMaterialColorToRandom : MonoBehaviour
 {
+    [SerializeField] private bool onTrigger = true;
     private Material mat;
     private void Start()
     {
@@ -12,11 +13,18 @@ public class ChangeMaterialColorToRandom : MonoBehaviour
     }
     private void Update()
     {
-        if (mat == null)
+        if (!onTrigger)
             return;
 
         XRInputDevices.RightController.TryGetFeatureValue(CommonUsages.primaryButton, out bool primaryButtonValue);
         if (primaryButtonValue)
-            mat.color = Random.ColorHSV();
+            ChangeColor();
+    }
+
+    public void ChangeColor()
+    {
+        if (mat == null)
+            return;
+        mat.color = Random.ColorHSV();
     }
 }
