@@ -4,13 +4,13 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
 public class XRayForceGrabSolver : MonoBehaviour
-{
+{    
     private XRRayInteractor interactor;
     private bool storedForceGrab;
 
     private void Awake()
     {
-        interactor = GetComponent<XRRayInteractor>();
+        interactor = GetComponent<XRRayInteractor>();        
         storedForceGrab = interactor.useForceGrab;
     }
 
