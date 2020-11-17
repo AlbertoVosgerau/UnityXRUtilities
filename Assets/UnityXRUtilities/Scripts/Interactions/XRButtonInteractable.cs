@@ -2,61 +2,57 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class XRButtonInteractor : MonoBehaviour
+[RequireComponent(typeof(Rigidbody))]
+public class XRButtonInteractable : XRBaseInteractable
 {
+    [Header("Button properties")]
+    public float duration = 0.5f;
+
     [SerializeField] private Transform buttonMesh;
     [SerializeField] private Vector3 onPressedLocalPosition;
-
-    private Vector3 originalLocalPosition;
 
     public UnityEvent onButtonPressed;
     public UnityEvent onButtonReleased;
 
-    private void Awake()
+    private Vector3 originalLocalPosition;
+    private void Start()
     {
         originalLocalPosition = buttonMesh.transform.localPosition;
     }
-
-    private void OnTriggerEnter(Collider other)
+    private void OnEnable()
     {
-        if (!other.CompareTag("Hands"))
-            return;
-
+        onHoverEntered.AddListener(OnHoverEnter);
+        onHoverExited.AddListener(OnHoverExit);
+    }
+    private void OnDisable()
+    {
+        onHoverEntered.RemoveListener(OnHoverEnter);
+        onHoverExited.RemoveListener(OnHoverExit);
+    }
+    private void OnHoverEnter(XRBaseInteractor xrBaseInteractor)
+    {
         onButtonPressed.Invoke();
-
-        if (buttonMesh == null)
-            return;
-
         StartCoroutine(UpdateTransform(onPressedLocalPosition));
     }
-    private void OnTriggerExit(Collider other)
+    private void OnHoverExit(XRBaseInteractor xrBaseInteractor)
     {
-        if (!other.CompareTag("Hands"))
-            return;
-
         onButtonReleased.Invoke();
-
-        if (buttonMesh == null)
-            return;
-
         StartCoroutine(UpdateTransform(originalLocalPosition));
     }
-
     private IEnumerator UpdateTransform(Vector3 targetPosition)
     {
         float time = 0;
         Debug.Log("Time zero");
         do
         {
-            buttonMesh.localPosition = Vector3.Lerp(buttonMesh.localPosition, targetPosition, time / 0.5f);
+            buttonMesh.localPosition = Vector3.Lerp(buttonMesh.localPosition, targetPosition, time / duration);
             Debug.Log($"Pos: {buttonMesh.localPosition}");
             time += Time.deltaTime;
             Debug.Log("Time");
             yield return null;
         }
-        while (time < 0.5f);
+        while (time < duration);
     }
 }
