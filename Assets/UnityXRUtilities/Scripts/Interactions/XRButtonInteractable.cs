@@ -5,7 +5,7 @@ using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
 
 [RequireComponent(typeof(Rigidbody))]
-public class XRButtonInteractable : XRBaseInteractable
+public class XRButtonInteractable : XRSimpleInteractable
 {
     [Header("Button properties")]
     public float duration = 0.5f;
