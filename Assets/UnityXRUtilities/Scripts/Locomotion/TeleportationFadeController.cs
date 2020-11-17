@@ -10,10 +10,12 @@ using UnityEngine.XR.Interaction.Toolkit;
 /// </summary>
 public class TeleportationFadeController : MonoBehaviour
 {
-    public float duration = 0.2f;
-    public float idleTime = 0.1f;
-    public XRRig xRRig;
-    public TeleportationProvider teleportationProvider;
+    [SerializeField] private float duration = 0.2f;
+    [SerializeField] private float idleTime = 0.1f;
+    [SerializeField] private float offsetFromCameraNearClip = 0.005f;
+    [SerializeField] private XRRig xRRig;
+    [SerializeField] private TeleportationProvider teleportationProvider;
+    [SerializeField] private List<GameObject> objectsToHideOnFade;
 
     private CanvasGroup canvasGroup;
     private Vector3 initialPosition;
@@ -22,6 +24,8 @@ public class TeleportationFadeController : MonoBehaviour
     private Quaternion finalRotation;
 
     public UnityEvent onFadeIn;
+    public UnityEvent onWaitStart;
+    public UnityEvent onWaitFinish;
     public UnityEvent onFadeOut;
     private void Start()
     {
@@ -57,7 +61,7 @@ public class TeleportationFadeController : MonoBehaviour
 
         canvas.renderMode = RenderMode.ScreenSpaceCamera;
         canvas.worldCamera = camera;
-        canvas.planeDistance = camera.nearClipPlane + 0.005f;
+        canvas.planeDistance = camera.nearClipPlane + offsetFromCameraNearClip;
 
         canvasGroup = canvas.gameObject.AddComponent<CanvasGroup>();
         canvasGroup.interactable = false;
@@ -81,6 +85,13 @@ public class TeleportationFadeController : MonoBehaviour
 
     private IEnumerator FadeInOutRoutine()
     {
+        List<bool> objbectVisibilityStates = new List<bool>();
+
+        for (int i = 0; i < objectsToHideOnFade.Count; i++)
+        {
+            objbectVisibilityStates.Add(objectsToHideOnFade[i].activeSelf);
+            objectsToHideOnFade[i].SetActive(false);
+        }
         float time = 0;
         xRRig.transform.position = initialPosition;
         xRRig.transform.rotation = initialRotation;
@@ -94,10 +105,17 @@ public class TeleportationFadeController : MonoBehaviour
         }
         while (time < duration/2);
 
+        onWaitStart.Invoke();
         time = 0;
         xRRig.transform.position = finalPosition;
         xRRig.transform.rotation = finalRotation;
         yield return new WaitForSecondsRealtime(idleTime);
+        onWaitFinish.Invoke();
+
+        for (int i = 0; i < objectsToHideOnFade.Count; i++)
+        {
+            objectsToHideOnFade[i].SetActive(objbectVisibilityStates[i]);
+        }
 
         do
         {
