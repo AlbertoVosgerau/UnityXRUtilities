@@ -18,8 +18,8 @@ public class XRScrollRectAxisInput : MonoBehaviour, IPointerEnterHandler, IPoint
 
     private void Update()
     {
-        if (!isOverRectTransform)
-            return;
+        //if (!isOverRectTransform)
+        //    return;
 
         Vector2 result;
 
