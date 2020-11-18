@@ -12,10 +12,10 @@ public class CanvasAutoMainCameraSetter : MonoBehaviour
 
     private void Update()
     {
-        if (canvas.worldCamera)
+        if (canvas.worldCamera == null)
             return;
 
-        if (canvas.worldCamera.gameObject.activeSelf)
+        if (canvas.worldCamera.gameObject.activeInHierarchy)
             return;
 
         Camera newCam = FindObjectOfType<Camera>();
@@ -24,5 +24,6 @@ public class CanvasAutoMainCameraSetter : MonoBehaviour
             return;
 
         canvas.worldCamera = newCam;
+
     }
 }
