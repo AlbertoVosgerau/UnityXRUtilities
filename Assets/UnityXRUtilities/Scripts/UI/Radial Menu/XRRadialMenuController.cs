@@ -14,8 +14,15 @@ public class XRRadialMenuController : MonoBehaviour
     [SerializeField] private int activeSections = 8;
     [SerializeField] private List<XRRadialMenuItem> menuItems;
 
-    private XRRadialMenuItem currentMenuItem;
+    private XRRadialMenuItem currentHoveredMenuItem;
     private bool haveMenuItemSelected;
+
+    public UnityEvent onEnable;
+    public UnityEvent onDisable;
+    public UnityEvent<XRRadialMenuItem> onHoverEnterItem;
+    public UnityEvent<XRRadialMenuItem> onHoverExitItem;
+    public UnityEvent<XRRadialMenuItem> onSelectItem;
+    public UnityEvent<XRRadialMenuItem> onDeselectItem;
 
     public TextMeshProUGUI debugText;
 
@@ -26,68 +33,82 @@ public class XRRadialMenuController : MonoBehaviour
     }
     private void Update()
     {
-        bool triggerButton;
         InputDevice inputDevice = controllerNode == XRNode.LeftHand ? XRInputDevices.LeftController : XRInputDevices.RightController;
 
-        if(haveMenuItemSelected)
+        if(haveMenuItemSelected && currentHoveredMenuItem != null)
         {
-            inputDevice.TryGetFeatureValue(CommonUsages.triggerButton, out triggerButton);
+            inputDevice.TryGetFeatureValue(CommonUsages.triggerButton, out haveMenuItemSelected);
 
-            if (triggerButton) 
+            if (haveMenuItemSelected) 
                 return;
 
-            debugText.text = $"Deselected item: {currentMenuItem}";
-            currentMenuItem.Deselect();
+            DeselectItem();
         }
 
         inputDevice.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 controllerAxis2D);
 
         if (controllerAxis2D.magnitude < inputDeadZone)
         {
-            currentMenuItem.HoverExit();
-            currentMenuItem = null;
+            if(currentHoveredMenuItem != null)
+            {
+                HoverExitItem();                
+            }
             return;
         }
 
         float angle = Vector2ToAngle(controllerAxis2D);
         HoveredSection(angle, out int hoveredSection);
-        Debug.Log($"Selecting: {hoveredSection}");
 
-        if(currentMenuItem != null)
+        if(currentHoveredMenuItem != null)
         {
-            inputDevice.TryGetFeatureValue(CommonUsages.triggerButton, out bool isSelected);
-            haveMenuItemSelected = isSelected;
-            if(haveMenuItemSelected)
+            inputDevice.TryGetFeatureValue(CommonUsages.triggerButton, out haveMenuItemSelected);
+            if (haveMenuItemSelected)
             {
-                currentMenuItem.Select();
-                debugText.text = $"Selected item: {currentMenuItem}";
+                SelectItem();
             }
         }
 
-        if (currentMenuItem == menuItems[hoveredSection])
+        if (currentHoveredMenuItem == menuItems[hoveredSection])
             return;
 
-        if(currentMenuItem != null)
+        if(currentHoveredMenuItem != null)
         {
-            currentMenuItem.HoverExit();
+            HoverExitItem();
         }
 
-        currentMenuItem = menuItems[hoveredSection];
-        menuItems[hoveredSection].HoverEnter();
-        debugText.text = $"Hover item: {currentMenuItem}";
-
+        HoverEnterItem(hoveredSection);
     }
-
+    private void HoverEnterItem(int item)
+    {
+        currentHoveredMenuItem = menuItems[item];
+        onHoverEnterItem.Invoke(currentHoveredMenuItem);
+        menuItems[item].HoverEnter();
+        debugText.text = $"Hover item: {currentHoveredMenuItem}";
+    }
+    private void HoverExitItem()
+    {        
+        debugText.text = $"Leaving item: {currentHoveredMenuItem}";
+        onHoverEnterItem.Invoke(currentHoveredMenuItem);
+        currentHoveredMenuItem.HoverExit();
+        currentHoveredMenuItem = null;
+    }
     private void SelectItem()
     {
-
+        debugText.text = $"Selected item: {currentHoveredMenuItem}";
+        onSelectItem.Invoke(currentHoveredMenuItem);
+        currentHoveredMenuItem.Select();
     }
-
     private void DeselectItem()
     {
-
+        debugText.text = $"Deselected item: {currentHoveredMenuItem}";
+        onDeselectItem.Invoke(currentHoveredMenuItem);
+        currentHoveredMenuItem.Deselect();
     }
-    
+
+    public void SetXRNode(XRNode node)
+    {
+        controllerNode = node;
+    }
     public float Vector2ToAngle(Vector2 input)
     {
         float valueInradians = Mathf.Atan2(input.y, input.x);
@@ -96,7 +117,6 @@ public class XRRadialMenuController : MonoBehaviour
 
         return finalValue;
     }
-
     public int HoveredSection(float angle, out int section)
     {
         float sectionLenght = 360 / activeSections;
