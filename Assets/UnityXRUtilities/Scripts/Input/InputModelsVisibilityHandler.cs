@@ -5,6 +5,7 @@ using UnityEngine;
 
 /// <summary>
 /// Handles input visual models visibility when using XR Controller. It will enable or disable controller, or hand model.
+/// User this script only if you have hands and controllers in the same scene and want to easily toggle between them.
 /// </summary>
 public class InputModelsVisibilityHandler : MonoBehaviour
 {

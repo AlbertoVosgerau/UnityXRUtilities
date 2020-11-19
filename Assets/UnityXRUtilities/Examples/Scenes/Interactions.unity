@@ -19709,7 +19709,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92700eaa622cc654a9df09b7a417d858, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startInVRMode: 0
+  startInVRMode: 1
   onEnableVR:
     m_PersistentCalls:
       m_Calls:
