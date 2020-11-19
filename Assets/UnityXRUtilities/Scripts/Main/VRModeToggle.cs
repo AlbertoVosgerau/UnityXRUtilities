@@ -12,6 +12,9 @@ using UnityEngine.XR.Management;
 public class VRModeToggle : MonoBehaviour
 {
     public bool startInVRMode;
+    public bool useFade = true;
+    [Tooltip("Optional XR Fade")]
+    public XRFade xRFade;
     public UnityEvent onEnableVR;
     public UnityEvent onDisableVR;
 
@@ -37,6 +40,8 @@ public class VRModeToggle : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
         VRModeController.EnableVR();
         onEnableVR.Invoke();
+        if(xRFade != null && useFade)
+            xRFade.FadeInOut();
 #endif
     }
     public void DisableVR()
@@ -45,6 +50,8 @@ public class VRModeToggle : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
         VRModeController.DisableVR();
         onDisableVR.Invoke();
+        if (xRFade != null && useFade)
+            xRFade.FadeInOut();
 #endif
     }
 }

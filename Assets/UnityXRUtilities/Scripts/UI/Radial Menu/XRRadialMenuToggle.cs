@@ -14,7 +14,8 @@ public class XRRadialMenuToggle : XRRadialMenuItem
     public override void Awake()
     {
         base.Awake();
-        toggleObject?.gameObject.SetActive(isSelected);
+        if (toggleObject != null)
+            toggleObject.gameObject.SetActive(isSelected);
     }
     public override void HoverEnter()
     {
@@ -44,8 +45,9 @@ public class XRRadialMenuToggle : XRRadialMenuItem
         {
             imageComponent.color = defaultColor;
         }
-        toggleObject?.gameObject.SetActive(isSelected);
         onToggle.Invoke(isSelected);
+        if(toggleObject != null)
+            toggleObject.gameObject.SetActive(isSelected);
     }
     public override void Deselect()
     {
