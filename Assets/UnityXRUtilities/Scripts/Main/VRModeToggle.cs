@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.XR;
 using UnityEngine.XR.Management;
 
@@ -31,12 +32,19 @@ public class VRModeToggle : MonoBehaviour
     }
     public void EnableVR()
     {
+#if !UNITY_ANDROID
+        // Deselect the button that fired this, to avoid a bug that the current EventSystem will hide.
+        EventSystem.current.SetSelectedGameObject(null);
         VRModeController.EnableVR();
         onEnableVR.Invoke();
+#endif
     }
     public void DisableVR()
     {
+#if !UNITY_ANDROID        
+        EventSystem.current.SetSelectedGameObject(null);
         VRModeController.DisableVR();
         onDisableVR.Invoke();
+#endif
     }
 }

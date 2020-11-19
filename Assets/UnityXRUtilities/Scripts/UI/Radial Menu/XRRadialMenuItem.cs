@@ -9,18 +9,20 @@ using UnityEngine.UI;
 /// </summary>
 public class XRRadialMenuItem : MonoBehaviour
 {
+    public bool IsSelected { get; private set; }
+    public bool isToggle;
+
     [SerializeField] private Color hoverColor = Color.gray;
     [SerializeField] private Color selectedColor = Color.white;
 
-
     private Image imageComponent;
     private Color defaultColor = Color.white;
-    private bool isSelected;
 
     public UnityEvent onHoverEnter;
     public UnityEvent onHoverExit;
     public UnityEvent onSelect;
     public UnityEvent onDeselect;
+    public UnityEvent<bool> onToggle;
     private void Awake()
     {
         imageComponent = GetComponent<Image>();
@@ -35,19 +37,61 @@ public class XRRadialMenuItem : MonoBehaviour
 
     public void HoverExit()
     {
-        imageComponent.color = defaultColor;
         onHoverExit.Invoke();
+        if(isToggle)
+        {
+            if(IsSelected)
+            {
+                imageComponent.color = selectedColor;
+            }
+            else
+            {
+                imageComponent.color = defaultColor;
+            }
+        }
+        else
+        {
+            imageComponent.color = defaultColor;
+        }
     }
 
     public void Select()
     {
+        IsSelected = isToggle? !IsSelected : true;
+
+        if(isToggle)
+        {
+            Toggle();
+            return;
+        }
         imageComponent.color = selectedColor;
         onSelect.Invoke();
     }
 
     public void Deselect()
     {
+        if (isToggle && IsSelected)
+            return;
+
         imageComponent.color = defaultColor;
         onDeselect.Invoke();
+    }
+
+
+    public void Toggle()
+    {
+        if (!isToggle)
+            return;
+
+        onToggle.Invoke(IsSelected);
+        if (!IsSelected)
+        {
+            Deselect();
+        }
+        else
+        {
+            imageComponent.color = selectedColor;
+            onSelect.Invoke();
+        }
     }
 }

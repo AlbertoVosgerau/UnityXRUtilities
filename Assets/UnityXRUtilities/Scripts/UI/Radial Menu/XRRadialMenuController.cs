@@ -99,15 +99,21 @@ public class XRRadialMenuController : MonoBehaviour
     }
     private void SelectItem()
     {
-        debugText.text = $"Selected item: {currentHoveredMenuItem}";
         onSelectItem.Invoke(currentHoveredMenuItem);
         currentHoveredMenuItem.Select();
+        if(currentHoveredMenuItem.isToggle)
+            debugText.text = $"Toggled item: {currentHoveredMenuItem} to {currentHoveredMenuItem.IsSelected}";
+        else
+            debugText.text = $"Selected item: {currentHoveredMenuItem}";
     }
     private void DeselectItem()
     {
-        debugText.text = $"Deselected item: {currentHoveredMenuItem}";
         onDeselectItem.Invoke(currentHoveredMenuItem);
         currentHoveredMenuItem.Deselect();
+        if (currentHoveredMenuItem.isToggle)
+            debugText.text = $"Toggled item: {currentHoveredMenuItem} to {currentHoveredMenuItem.IsSelected}";
+        else
+            debugText.text = $"Deselected item: {currentHoveredMenuItem}";
     }
 
     public void SetXRNode(XRNode node)

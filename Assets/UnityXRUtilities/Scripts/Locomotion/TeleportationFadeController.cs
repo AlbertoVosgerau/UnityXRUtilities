@@ -7,12 +7,17 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 /// <summary>
 /// Adds fade behavior to Teleport. Just add this to LocomotionSystem and fill the inspector.
+/// Since I found no way to delay or prevent TeleportationProvider's queue to teleport, this scripts implements a workaround.
+/// On startLocomotion it stores initial transform, on endLocomotion it stores final transform, then starts the fade, reverts to initial position
+/// Finally, when fade is on waiting stage, it moves the rig to the final position.
 /// </summary>
 public class TeleportationFadeController : MonoBehaviour
 {
     [SerializeField] private float duration = 0.2f;
     [SerializeField] private float idleTime = 0.1f;
     [SerializeField] private float offsetFromCameraNearClip = 0.005f;
+    [Tooltip("Optional parent for the created fade")]
+    [SerializeField] private Transform fadeParent;
     [SerializeField] private XRRig xRRig;
     [SerializeField] private TeleportationProvider teleportationProvider;
     [SerializeField] private List<GameObject> objectsToHideOnFade;
@@ -81,6 +86,9 @@ public class TeleportationFadeController : MonoBehaviour
         imageTransform.anchorMin = new Vector2(0, 0);
         imageTransform.anchorMax = new Vector2(1, 1);
         imageTransform.pivot = new Vector2(0.5f, 0.5f);
+
+        if (fadeParent != null)
+            canvas.transform.parent = fadeParent;
     }
 
     private IEnumerator FadeInOutRoutine()
