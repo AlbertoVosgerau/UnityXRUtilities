@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
+/// <summary>
+///  Handles XRGrabLocalInteractables to decite if it will be forced to grab or not, allowing both behaviors based on interactable.
+/// </summary>
 public class XRayForceGrabSolver : MonoBehaviour
 {    
     private XRRayInteractor interactor;

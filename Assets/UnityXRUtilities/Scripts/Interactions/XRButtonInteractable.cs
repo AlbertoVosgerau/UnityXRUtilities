@@ -4,6 +4,12 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
 
+/// <summary>
+/// Implements and easy way to interact with buttons.
+/// onPressedLocalPosition will define the local position of the button after pressed. No need for animation
+/// To use it, just grab the actual button collider to the colliders list and you are good to go
+/// </summary>
+
 [RequireComponent(typeof(Rigidbody))]
 public class XRButtonInteractable : XRSimpleInteractable
 {

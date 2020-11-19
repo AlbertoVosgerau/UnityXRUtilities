@@ -7,11 +7,16 @@ using UnityEngine.XR.Interaction.Toolkit;
 using TMPro;
 using UnityEngine.Events;
 
+/// <summary>
+/// Easily implements a radial menu.
+/// </summary>
 public class XRRadialMenuController : MonoBehaviour
 {
     [SerializeField] private XRNode controllerNode;
     [SerializeField] private float inputDeadZone = 0.4f;
+    [Tooltip("The number of sections you want to interact with")]
     [SerializeField] private int activeSections = 8;
+    [Tooltip("The visual representation of the sections. If your item number is lower than active rections, you can have partial radial menus")]
     [SerializeField] private List<XRRadialMenuItem> menuItems;
 
     private XRRadialMenuItem currentHoveredMenuItem;

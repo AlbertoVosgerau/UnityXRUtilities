@@ -6,6 +6,12 @@ using UnityEngine.Events;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 
+/// <summary>
+/// Instantiates controller model into the scene and puts it inside the corresponding hand.
+/// It verifies the device model and tries to attach the corresponding model to it.
+/// If the device is not into the list, creates a default model.
+/// The models are stored in a ScriptableObject that can be created from Project, Right Click > Create > UnityXRUtilities > VRControllers
+/// </summary>
 public class DeviceControllerModelCreator : MonoBehaviour
 {
     public bool showControllersOnCreation = true;

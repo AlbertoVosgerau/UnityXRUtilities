@@ -2,6 +2,9 @@
 using UnityEngine;
 using UnityEngine.XR;
 
+/// <summary>
+/// Register devices into XRInputDevices. It will scan for controllers whenever right or left controller are not valid.
+/// </summary>
 public class RegisterInputDevices : MonoBehaviour
 {
     [SerializeField] private bool scanForDevicesOnUpdate = true;

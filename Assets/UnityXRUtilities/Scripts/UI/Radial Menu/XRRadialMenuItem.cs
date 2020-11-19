@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
+/// <summary>
+/// Add this to each item of a radial menu
+/// </summary>
 public class XRRadialMenuItem : MonoBehaviour
 {
     [SerializeField] private Color hoverColor = Color.gray;

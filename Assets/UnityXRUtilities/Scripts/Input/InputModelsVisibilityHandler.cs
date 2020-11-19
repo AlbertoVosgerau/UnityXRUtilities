@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// Handles input visual models visibility when using XR Controller. It will enable or disable controller, or hand model.
+/// </summary>
 public class InputModelsVisibilityHandler : MonoBehaviour
 {
     [SerializeField] private bool showControllersByDefault = true;

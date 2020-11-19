@@ -5,6 +5,9 @@ using UnityEngine.Events;
 using UnityEngine.XR;
 using UnityEngine.XR.Management;
 
+/// <summary>
+/// Toggles between VR and non VR mode and fires events corresponding to the action
+/// </summary>
 public class VRModeToggle : MonoBehaviour
 {
     public bool startInVRMode;

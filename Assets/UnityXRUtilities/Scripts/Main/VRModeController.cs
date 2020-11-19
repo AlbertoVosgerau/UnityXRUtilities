@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.Management;
 
+/// <summary>
+/// Enable/Disable VR Mode
+/// </summary>
 public class VRModeController : MonoBehaviour
 {
     public static void EnableVR()

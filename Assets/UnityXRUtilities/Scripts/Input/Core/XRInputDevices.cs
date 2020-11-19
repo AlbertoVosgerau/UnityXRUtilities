@@ -1,5 +1,9 @@
 ﻿using System;
 using UnityEngine.XR;
+
+/// <summary>
+/// Stores controllers as static objects for easy access from anywhere in the project
+/// </summary>
 public class XRInputDevices
 {
     public static InputDevice RightController

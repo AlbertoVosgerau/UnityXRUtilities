@@ -6,6 +6,9 @@ using UnityEngine.UI;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 
+/// <summary>
+/// Handles UI scroll behavior from the controllers's joystick
+/// </summary>
 public class XRScrollRectAxisInput : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     private ScrollRect scrollRect;

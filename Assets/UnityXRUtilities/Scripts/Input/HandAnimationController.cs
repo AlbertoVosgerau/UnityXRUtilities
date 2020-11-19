@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 
+/// <summary>
+/// Controls hand animation
+/// </summary>
 public class HandAnimationController : MonoBehaviour
 {
     [SerializeField] private InputType inputType;

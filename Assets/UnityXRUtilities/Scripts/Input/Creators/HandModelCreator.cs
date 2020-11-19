@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
 
+/// <summary>
+/// Instantiates hand model into the scene and puts it inside the corresponding hand
+/// </summary>
 public class HandModelCreator : MonoBehaviour
 {
     public bool showHandsOnCreation = true;

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit;
 
 /// <summary>
-/// Adds fade behavior to Teleport. Just add this to LocomotionSystem
+/// Adds fade behavior to Teleport. Just add this to LocomotionSystem and fill the inspector.
 /// </summary>
 public class TeleportationFadeController : MonoBehaviour
 {

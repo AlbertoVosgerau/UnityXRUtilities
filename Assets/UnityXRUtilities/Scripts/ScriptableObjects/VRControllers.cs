@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 
 [Serializable]
-[CreateAssetMenu(fileName = "VRControllers", menuName = "UnityXRUtilities/VRControllers")]
+[CreateAssetMenu(fileName = "VRControllers", menuName = "UnityXRUtilities/VR Controllers")]
 public class VRControllers : ScriptableObject
 {
     public GameObject defaultController;
