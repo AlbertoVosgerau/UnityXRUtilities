@@ -33,25 +33,55 @@ public class VRModeToggle : MonoBehaviour
             DisableVR();
         }
     }
-    public void EnableVR()
+    private void DoEnableVR()
     {
-#if !UNITY_ANDROID
-        // Deselect the button that fired this, to avoid a bug that the current EventSystem will hide.
         EventSystem.current.SetSelectedGameObject(null);
         VRModeController.EnableVR();
         onEnableVR.Invoke();
-        if(xRFade != null && useFade)
-            xRFade.FadeInOut();
-#endif
+
+        if (xRFade != null && useFade)
+        {
+            xRFade.onWaitStart.RemoveListener(DoEnableVR);
+        }
     }
-    public void DisableVR()
+
+    private void DoDisableVR()
     {
-#if !UNITY_ANDROID        
         EventSystem.current.SetSelectedGameObject(null);
         VRModeController.DisableVR();
         onDisableVR.Invoke();
         if (xRFade != null && useFade)
+        {
+            xRFade.onWaitStart.RemoveListener(DoDisableVR);
+        }
+    }
+
+    public void EnableVR()
+    {
+#if !UNITY_ANDROID
+        
+        if(xRFade != null && useFade)
+        {
+            xRFade.onWaitStart.AddListener(DoEnableVR);
             xRFade.FadeInOut();
+            return;
+        }
+        DoEnableVR();
 #endif
     }
+ 
+    public void DisableVR()
+    {
+#if !UNITY_ANDROID        
+        
+        if (xRFade != null && useFade)
+        {
+            xRFade.onWaitStart.AddListener(DoDisableVR);
+            xRFade.FadeInOut();
+            return;
+        }
+        DoDisableVR();
+#endif
+    }
+
 }

@@ -33,7 +33,6 @@ public class TeleportationFadeController : MonoBehaviour
         {
             xRRig = locomotionSystem.xrRig;
         }
-        xRFade.CreateCanvas();
     }
     private void OnEnable()
     {
