@@ -15,7 +15,7 @@ public class VRModeToggle : MonoBehaviour
     public UnityEvent onEnableVR;
     public UnityEvent onDisableVR;
 
-    private void Awake()
+    private void Start()
     {
         ToggleVR(startInVRMode);
     }
