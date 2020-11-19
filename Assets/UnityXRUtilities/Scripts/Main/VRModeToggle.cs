@@ -83,5 +83,4 @@ public class VRModeToggle : MonoBehaviour
         DoDisableVR();
 #endif
     }
-
 }
