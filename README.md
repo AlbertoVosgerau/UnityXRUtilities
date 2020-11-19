@@ -3,12 +3,12 @@
 In this project you will find tools, scripts and prefabs created in order to speed up my the creation of common tasks in UnityXR that I tough could be useful to start the ball rolling for projects that can already support the toggle between VR and non VR.
 
 DATA
-	The folder UnityXRUtilities/Data contains a ScriptableObject that stores the defult controllers for many devices. You can add any prefab to the list, but make sure its name is precisely the one unity registers for the device you want.
+The folder UnityXRUtilities/Data contains a ScriptableObject that stores the defult controllers for many devices. You can add any prefab to the list, but make sure its name is precisely the one unity registers for the device you want.
 In order to add a controller to a scene, you need a XR Rig and the prefabs RegisterInputDevices and DeviceControllerModelCreator in the scene.
 
 PREFABS
 
-	The folder UnityXRUtilities/Prefabs contains the following folders and prefabs:
+The folder UnityXRUtilities/Prefabs contains the following folders and prefabs:
 
 
 Input Models/Controllers:
