@@ -6,6 +6,8 @@ using UnityEngine.UI;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 
+
+// TODO: Not finished. Can't figure how to detect which controller is poiting to a canvas.
 /// <summary>
 /// Handles UI scroll behavior from the controllers's joystick
 /// </summary>
