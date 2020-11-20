@@ -18,6 +18,9 @@ public class VRModeToggle : MonoBehaviour
     [Tooltip("Optional XR Fade")]
     [SerializeField] private XRFade xRFade;
 
+    public List<GameObject> VRModeContent;
+    public List<GameObject> NonVRModeContent;
+
     public UnityEvent onEnableVR;
     public UnityEvent onDisableVR;
 
@@ -55,6 +58,7 @@ public class VRModeToggle : MonoBehaviour
 
         onEnableVR.Invoke();
         isVRMode = true;
+        SetObjectVisibilities();
 
         if (xRFade != null && useFade)
         {
@@ -72,6 +76,7 @@ public class VRModeToggle : MonoBehaviour
 
         onDisableVR.Invoke();
         isVRMode = false;
+        SetObjectVisibilities();
         if (xRFade != null && useFade)
         {
             //xRFade.onWaitStart.RemoveListener(DoDisableVR);
@@ -106,5 +111,20 @@ public class VRModeToggle : MonoBehaviour
         }
         DoDisableVR();
 #endif
+    }
+
+    private void SetObjectVisibilities()
+    {
+        for (int i = 0; i < VRModeContent.Count; i++)
+        {
+            if (VRModeContent[i] != null)
+                VRModeContent[i].SetActive(isVRMode);
+        }
+
+        for (int i = 0; i < NonVRModeContent.Count; i++)
+        {
+            if (NonVRModeContent[i] != null)
+                NonVRModeContent[i].SetActive(!isVRMode);
+        }
     }
 }

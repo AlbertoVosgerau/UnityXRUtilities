@@ -42,6 +42,7 @@ public class VRToggleCanvasRenderModeSolver : MonoBehaviour
         if (xRParent != null && vrCamera == null)
             vrCamera = xRParent.GetComponentInChildren<Camera>(true);
 
+
         CanvasRenderModeTarget.renderMode = RenderMode.WorldSpace;
         if (xRParent == null)
             return;
