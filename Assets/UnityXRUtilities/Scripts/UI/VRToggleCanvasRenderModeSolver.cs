@@ -4,50 +4,58 @@ using UnityEngine;
 
 public class VRToggleCanvasRenderModeSolver : MonoBehaviour
 {
+    public VRModeToggle vRToggle;
     public Canvas CanvasRenderModeTarget;
-    public Transform parent;
+    public Camera vrCamera;
+    public Transform xRParent;
+    public Transform PCParent;
     public Vector3 worldSpaceModeLocalPosition = new Vector3(0, 1.25f, 0.75f);
     public Vector3 worldSpaceModeScale = new Vector3(0.0025f, 0.0025f, 0.0025f);
 
-    private VRModeToggle vRToggle;
-    private Transform storedParent;
 
     public void Awake()
     {
-        CanvasRenderModeTarget = GetComponent<Canvas>();
         vRToggle = FindObjectOfType<VRModeToggle>();
+        CanvasRenderModeTarget = GetComponent<Canvas>();
+        if(xRParent != null && vrCamera == null)
+            vrCamera = xRParent.GetComponentInChildren<Camera>(true);
     }
 
     private void OnEnable()
     {
-        if (vRToggle == null)
-            return;
-
         vRToggle.onEnableVR.AddListener(OnEnableVR);
         vRToggle.onDisableVR.AddListener(OnDisableVR);
     }
 
     private void OnDisable()
     {
-        if (vRToggle == null)
-            return;
         vRToggle.onEnableVR.RemoveListener(OnEnableVR);
         vRToggle.onDisableVR.RemoveListener(OnDisableVR);
     }
 
     public void OnEnableVR()
     {
-        storedParent = CanvasRenderModeTarget.transform.parent;
+        Debug.Log("Enabled VR");
+        if(PCParent == null)
+            PCParent = CanvasRenderModeTarget.transform.parent;
+
+        if (xRParent != null && vrCamera == null)
+            vrCamera = xRParent.GetComponentInChildren<Camera>(true);
+
         CanvasRenderModeTarget.renderMode = RenderMode.WorldSpace;
-        if (parent == null)
+        if (xRParent == null)
             return;
-        CanvasRenderModeTarget.transform.SetParent(parent);
+
+        CanvasRenderModeTarget.worldCamera = vrCamera;
+        CanvasRenderModeTarget.transform.SetParent(xRParent);
         CanvasRenderModeTarget.transform.localPosition = worldSpaceModeLocalPosition;
         CanvasRenderModeTarget.transform.localScale = worldSpaceModeScale;
     }
     public void OnDisableVR()
     {
-        CanvasRenderModeTarget.transform.SetParent(storedParent);
+        Debug.Log("Disabled VR");
+        CanvasRenderModeTarget.worldCamera = null;
+        CanvasRenderModeTarget.transform.SetParent(PCParent);
         CanvasRenderModeTarget.renderMode = RenderMode.ScreenSpaceCamera;
     }
 }

@@ -12,19 +12,22 @@ public class VRToggleCanvasRenderModeSolverEditor : Editor
     RectTransform rectTransform;
     private void OnEnable()
     {
+        if (Application.isPlaying)
+            return;
         canvasRenderModeSolver = target as VRToggleCanvasRenderModeSolver;
         Canvas localCanvas = canvasRenderModeSolver.GetComponent<Canvas>();
+        canvasRenderModeSolver.vRToggle = FindObjectOfType<VRModeToggle>();
         XRRig targetTransform = FindObjectOfType<XRRig>();
         if (canvasRenderModeSolver.CanvasRenderModeTarget == null && localCanvas != null)
             canvasRenderModeSolver.CanvasRenderModeTarget = localCanvas;
-        if (canvasRenderModeSolver.parent == null && targetTransform != null)
-            canvasRenderModeSolver.parent = targetTransform.transform;
+        if (canvasRenderModeSolver.xRParent == null && targetTransform != null)
+            canvasRenderModeSolver.xRParent = targetTransform.transform;
 
         rectTransform = canvasRenderModeSolver.GetComponent<RectTransform>();
 
         if (canvasRenderModeSolver.CanvasRenderModeTarget.renderMode == RenderMode.WorldSpace)
         {
-            rectTransform.SetParent(canvasRenderModeSolver.parent);
+            rectTransform.SetParent(canvasRenderModeSolver.xRParent);
             canvasRenderModeSolver.worldSpaceModeLocalPosition = rectTransform.localPosition;
             canvasRenderModeSolver.worldSpaceModeScale = rectTransform.localScale;
         }
@@ -32,6 +35,8 @@ public class VRToggleCanvasRenderModeSolverEditor : Editor
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
+        if (Application.isPlaying)
+            return;
         if(GUILayout.Button("Canvas on VR Mode"))
         {
             canvasRenderModeSolver.Awake();
@@ -66,9 +71,9 @@ public class VRToggleCanvasRenderModeSolverEditor : Editor
                 }
                 if (GUILayout.Button("Store Transforms"))
                 {
-                    rectTransform.SetParent(canvasRenderModeSolver.parent);
                     canvasRenderModeSolver.worldSpaceModeLocalPosition = rectTransform.localPosition;
                     canvasRenderModeSolver.worldSpaceModeScale = rectTransform.localScale;
+                    canvasRenderModeSolver.OnEnableVR();
                 }
                 break;
         }
