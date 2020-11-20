@@ -6,7 +6,7 @@ using UnityEngine;
 /// When you toggle between VR and non VR mode, you might need to define the Canvase's worldCamera, so it interacts correctly with the UI.
 /// This script get the current active camera for interaction;
 /// </summary>
-public class CanvasAutoMainCameraSetter : MonoBehaviour
+public class VRToggleCanvasMainCameraSetter : MonoBehaviour
 {
     private Canvas canvas;
     private void Start()

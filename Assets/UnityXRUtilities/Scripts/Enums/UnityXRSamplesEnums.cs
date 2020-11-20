@@ -3,3 +3,9 @@
     RightController,
     LeftController
 }
+
+public enum CanvasRenderEditMode
+{
+    ScreenSpace,
+    WorldSpace
+}
