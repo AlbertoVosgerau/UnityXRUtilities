@@ -11,8 +11,8 @@ public class VRModeController : MonoBehaviour
 {
     public static void EnableVR()
     {
-        XRGeneralSettings.Instance.Manager.InitializeLoaderSync();
         XRGeneralSettings.Instance.Manager.StartSubsystems();
+        XRGeneralSettings.Instance.Manager.InitializeLoaderSync();
     }
     public static void DisableVR()
     {

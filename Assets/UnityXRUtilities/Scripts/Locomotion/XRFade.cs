@@ -8,7 +8,7 @@ public class XRFade : MonoBehaviour
 {
     [SerializeField] private float duration = 0.2f;
     [SerializeField] private float idleTime = 0.1f;
-    [SerializeField] private float offsetFromCameraNearClip = 0.005f;
+    [SerializeField] private float offsetFromCameraNearClip = 0.001f;
     [Tooltip("Optional parent for the created fade")]
     [SerializeField] private Transform fadeParent;
 
@@ -21,17 +21,6 @@ public class XRFade : MonoBehaviour
     public UnityEvent onWaitStart;
     public UnityEvent onWaitFinish;
     public UnityEvent onFadeOut;
-
-    private void Update()
-    {
-        if (canvas.worldCamera.gameObject.activeInHierarchy)
-            return;
-    }
-
-    private void UpdateCanvasCamera()
-    {
-
-    }
 
     public void CreateCanvas(float defaultAlpha)
     {
@@ -179,6 +168,7 @@ public class XRFade : MonoBehaviour
         {
             Camera newCam = Camera.FindObjectOfType<Camera>();
             canvas.worldCamera = newCam;
+            canvas.planeDistance = offsetFromCameraNearClip;
             return true;
         }
 

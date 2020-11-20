@@ -22,8 +22,17 @@ public class TeleportationFadeController : MonoBehaviour
     private Quaternion initialRotation;
     private Quaternion finalRotation;
 
+    private void Awake()
+    {
+        if (xRFade == null)
+        {
+            this.enabled = false;
+        }
+    }
+
     private void Start()
     {
+        
         if (teleportationProvider == null)
             teleportationProvider = GetComponent<TeleportationProvider>();
 

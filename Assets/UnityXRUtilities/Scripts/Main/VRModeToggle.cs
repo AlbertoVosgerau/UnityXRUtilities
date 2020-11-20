@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.XR;
+using UnityEngine.XR.Interaction.Toolkit.UI;
 using UnityEngine.XR.Management;
 
 /// <summary>
@@ -13,18 +14,29 @@ public class VRModeToggle : MonoBehaviour
 {
     public bool startInVRMode;
     public bool useFade = true;
+
     [Tooltip("Optional XR Fade")]
-    public XRFade xRFade;
+    [SerializeField] private XRFade xRFade;
+
     public UnityEvent onEnableVR;
     public UnityEvent onDisableVR;
 
+    private bool isVRMode;
+
     private void Start()
     {
-        ToggleVR(startInVRMode);
+        if (startInVRMode)
+        {
+            EnableVR();
+            return;
+        }
+
+        DisableVR();
     }
-    public void ToggleVR(bool isEnabled)
+    public void ToggleVR()
     {
-        if(isEnabled)
+        isVRMode = !isVRMode;
+        if(isVRMode)
         {
             EnableVR();
         }
@@ -35,9 +47,14 @@ public class VRModeToggle : MonoBehaviour
     }
     private void DoEnableVR()
     {
-        EventSystem.current.SetSelectedGameObject(null);
+        if(EventSystem.current != null)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+        }
         VRModeController.EnableVR();
+
         onEnableVR.Invoke();
+        isVRMode = true;
 
         if (xRFade != null && useFade)
         {
@@ -47,12 +64,17 @@ public class VRModeToggle : MonoBehaviour
 
     private void DoDisableVR()
     {
+        if(EventSystem.current != null)
+        {
         EventSystem.current.SetSelectedGameObject(null);
+        }
         VRModeController.DisableVR();
+
         onDisableVR.Invoke();
+        isVRMode = false;
         if (xRFade != null && useFade)
         {
-            xRFade.onWaitStart.RemoveListener(DoDisableVR);
+            //xRFade.onWaitStart.RemoveListener(DoDisableVR);
         }
     }
 
@@ -62,7 +84,8 @@ public class VRModeToggle : MonoBehaviour
         
         if(xRFade != null && useFade)
         {
-            xRFade.onWaitStart.AddListener(DoEnableVR);
+            DoEnableVR();
+            //xRFade.onWaitStart.AddListener(DoEnableVR);
             xRFade.FadeInOut();
             return;
         }
@@ -76,7 +99,8 @@ public class VRModeToggle : MonoBehaviour
         
         if (xRFade != null && useFade)
         {
-            xRFade.onWaitStart.AddListener(DoDisableVR);
+            DoDisableVR();
+            //xRFade.onWaitStart.AddListener(DoDisableVR);
             xRFade.FadeInOut();
             return;
         }
