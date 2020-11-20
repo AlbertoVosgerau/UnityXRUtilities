@@ -15,8 +15,9 @@ public class VRModeToggle : MonoBehaviour
     public bool startInVRMode;
     public bool useFade = true;
 
+    // FIXME: Not working properly, just breaks the whole transition. Figure out why
     [Tooltip("Optional XR Fade")]
-    [SerializeField] private XRFade xRFade;
+    private XRFade xRFade;
 
     public List<GameObject> VRModeContent;
     public List<GameObject> NonVRModeContent;
